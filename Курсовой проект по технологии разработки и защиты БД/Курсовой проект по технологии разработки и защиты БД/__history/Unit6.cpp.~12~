@@ -1,0 +1,422 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit6.h"
+#include "Unit16.h"
+#include "Unit15.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma link "sLabel"
+#pragma link "sPanel"
+#pragma link "sButton"
+#pragma link "sComboBox"
+#pragma link "sRadioButton"
+#pragma link "sCheckBox"
+#pragma link "sEdit"
+#pragma link "sPageControl"
+#pragma link "frxADOComponents"
+#pragma link "frxClass"
+#pragma link "frxDBSet"
+#pragma resource "*.dfm"
+TForm6 *Form6;
+String cWhere;
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+__fastcall TForm6::TForm6(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void ReopenQuery()
+{
+  cWhere= "";
+  if (Form6->sComboBox1->Enabled==true)
+  {
+	 cWhere = "fam=" + QuotedStr(Form6->sComboBox1->Text);
+  };
+  if (Form6->sComboBox2->Enabled==true)
+  {
+  if (cWhere!="")
+  {
+	  cWhere= cWhere + " AND ";
+  }
+	cWhere="GroupSt="+ QuotedStr(Form6->sComboBox2->Text);
+  };
+  if (Form6->sComboBox3->Enabled==true)
+  {
+  if (cWhere!="")
+  {
+	  cWhere = cWhere + " AND ";
+  }
+	cWhere="NameDiscipline="+ QuotedStr(Form6->sComboBox3->Text);
+  };
+  if (Form6->DateTimePicker1->Enabled==true)
+  {
+   if (cWhere!="")
+  {
+	  cWhere = cWhere + " AND ";
+  }
+	cWhere="DateSt="+
+	QuotedStr(DateToStr(Form6->DateTimePicker1->Date.FormatString("dd.mm.yyyy")));
+  };
+  DataModule1->ADOQuery1->SQL->Clear();
+  if (cWhere!="")
+  {
+   DataModule1->ADOQuery1->SQL->Add("SELECT NumberResult as [Номер результата],"
+   "fam as [Фамилия], GroupSt as [Группа], ThemeName as [Название темы], "
+   "NameDiscipline as [Название дисциплины], DateSt as [Дата],"
+   "StartSt as [Время начала], "
+   " FinishSt as [Время конца], Average as [Затраченое время (мин.)], "
+   "SumPoint as [Сумма баллов], Mark as [Оценка]"
+   " FROM Results INNER JOIN"
+   " Student ON Results.NumberStudent = Student.NumberStudent INNER JOIN"
+   " Discipline ON Results.NumberDiscipline = Discipline.NumberDiscipline"
+   " INNER JOIN Theme ON Results.NumberTheme = Theme.NumberTheme AND "
+   "Results.NumberDiscipline = Theme.NumberDiscipline AND"
+   " Discipline.NumberDiscipline = Theme.NumberDiscipline Where "+cWhere+ ";");
+  }
+  else
+  {
+	DataModule1->ADOQuery1->SQL->Add("SELECT NumberResult as [Номер результата],"
+   "fam as [Фамилия], GroupSt as [Группа], ThemeName as [Название темы], "
+   "NameDiscipline as [Название дисциплины], DateSt as [Дата],"
+   "StartSt as [Время начала], "
+   " FinishSt as [Время конца], Average as [Затраченое время (мин.)], "
+   "SumPoint as [Сумма баллов], Mark as [Оценка]"
+   " FROM Results INNER JOIN"
+   " Student ON Results.NumberStudent = Student.NumberStudent INNER JOIN"
+   " Discipline ON Results.NumberDiscipline = Discipline.NumberDiscipline"
+   " INNER JOIN Theme ON Results.NumberTheme = Theme.NumberTheme AND "
+   "Results.NumberDiscipline = Theme.NumberDiscipline AND"
+   " Discipline.NumberDiscipline = Theme.NumberDiscipline");
+  }
+  DataModule1->ADOQuery1->Open();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm6::FormActivate(TObject *Sender)
+{
+   Form6->sLabel4->Caption="Добавление дисциплины!";
+   Form6->sEdit1->Text="Введите название дисциплины!";
+   Form6->sButton3->Caption="Внести запись.";
+   Form6->sLabel5->Caption="Добавление темы!";
+   Form6->sEdit2->Text="Введите название темы!";
+   Form6->sComboBox7->Text="Выберите дисциплину!";
+   Form6->sButton5->Caption="Внести запись.";
+   Form6->sLabel6->Caption="Добавление ответа на вопрос!";
+   Form6->sEdit3->Text="Введите текст ответа!";
+   Form6->sButton7->Caption="Внести запись.";
+   Form6->sCheckBox5->Caption="Ответ правильный?";
+   Form6->sComboBox6->Text="Выберите вопрос к которому относится этот ответ.";
+   Form6->sLabel7->Caption="Добавление вопроса!";
+   Form6->sEdit4->Text="Введите текст вопроса!";
+   Form6->sButton10->Caption="Внести запись.";
+   Form6->sComboBox4->Text="Выберите дисциплину!";
+   Form6->sComboBox5->Text="Выберите тему!";
+   DataModule1->ADOQuery1->Close();
+   DataModule1->ADOQuery1->SQL->Clear();
+   DataModule1->ADOQuery1->SQL->Add("Select fam, name, otch from Teacher"
+   " Where login="+ QuotedStr(Form1->sEdit3->Text)+ " and password=" +
+   QuotedStr(Form1->sEdit4->Text)+";");
+   DataModule1->ADOQuery1->Open();
+   Form6->sLabel2->Caption="Добро пожаловать: "+
+   DataModule1->ADOQuery1->FieldByName("fam")->AsString+" "+
+   DataModule1->ADOQuery1->FieldByName("name")->AsString+" "+
+   DataModule1->ADOQuery1->FieldByName("otch")->AsString+"!";
+   Form6->sLabel1->Caption="Просмотр результатов тестирования: ";
+   Form6->sCheckBox1->Caption ="По дате.";
+   Form6->sCheckBox2->Caption="По учащемуся.";
+   Form6->sCheckBox3->Caption="По группе.";
+   Form6->sCheckBox4->Caption="По дисциплине.";
+   Form6->sComboBox1->Text="Фамилии!";
+   Form6->sComboBox2->Text="Группы!";
+   Form6->sComboBox3->Text="Дисциплины!";
+   DataModule1->ADOQuery1->Close();
+   DataModule1->ADOQuery1->SQL->Clear();
+   DataModule1->ADOQuery1->SQL->Add("Select fam, GroupSt from Student;");
+   DataModule1->ADOQuery1->Open();
+   DataModule1->ADOQuery1->First();
+   //////////////////////////////////////////////////////////////////
+   for (int i=0; i < DataModule1->ADOQuery1->RecordCount; i++)
+   {
+	  Form6->sComboBox1->Items->Add(DataModule1->ADOQuery1->FieldByName("fam")->AsString);
+	  DataModule1->ADOQuery1->Next();
+   }
+   DataModule1->ADOQuery1->First();
+   for (int i=0; i < DataModule1->ADOQuery1->RecordCount; i++)
+   {
+	  Form6->sComboBox2->Items->Add(DataModule1->ADOQuery1->FieldByName("GroupSt")->AsString);
+	  DataModule1->ADOQuery1->Next();
+   }
+   /////////////////////////////////////////////////////////////////Доработать
+   DataModule1->ADOQuery1->Close();
+   DataModule1->ADOQuery1->SQL->Clear();
+   DataModule1->ADOQuery1->SQL->Add("Select NameDiscipline From Discipline;");
+   DataModule1->ADOQuery1->Open();
+   DataModule1->ADOQuery1->First();
+   for (int i=0; i < DataModule1->ADOQuery1->RecordCount; i++)
+   {
+	  Form6->sComboBox3->Items->Add(DataModule1->ADOQuery1->FieldByName("NameDiscipline")->AsString);
+	  DataModule1->ADOQuery1->Next();
+   }
+   DataModule1->ADOQuery1->First();
+    for (int i=0; i < DataModule1->ADOQuery1->RecordCount; i++)
+   {
+	  Form6->sComboBox7->Items->Add(DataModule1->ADOQuery1->FieldByName("NameDiscipline")->AsString);
+	  DataModule1->ADOQuery1->Next();
+   }
+   DataModule1->ADOQuery1->First();
+	for (int i=0; i < DataModule1->ADOQuery1->RecordCount; i++)
+   {
+	  Form6->sComboBox4->Items->Add(DataModule1->ADOQuery1->FieldByName("NameDiscipline")->AsString);
+	  DataModule1->ADOQuery1->Next();
+   }
+   DataModule1->ADOQuery1->First();
+	for (int i=0; i < DataModule1->ADOQuery1->RecordCount; i++)
+   {
+	  Form6->sComboBox8->Items->Add(DataModule1->ADOQuery1->FieldByName("NameDiscipline")->AsString);
+	  DataModule1->ADOQuery1->Next();
+   }
+   Form6->sLabel3->Caption="Очистка журнала регистрации студентов!";
+   Form6->sButton1->Caption="Удаление выбранных.";
+   Form6->sButton2->Caption="Удалить всех.";
+   DataModule1->ADOQuery1->Close();
+   DataModule1->ADOQuery1->SQL->Clear();
+   DataModule1->ADOQuery1->SQL->Add("SELECT NumberResult as [Номер результата],"
+   "fam as [Фамилия], GroupSt as [Группа], ThemeName as [Название темы], "
+   "NameDiscipline as [Название дисциплины], DateSt as [Дата],"
+   "StartSt as [Время начала], "
+   " FinishSt as [Время конца], Average as [Затраченое время (мин.)], "
+   "SumPoint as [Сумма баллов], Mark as [Оценка]"
+   " FROM Results INNER JOIN"
+   " Student ON Results.NumberStudent = Student.NumberStudent INNER JOIN"
+   " Discipline ON Results.NumberDiscipline = Discipline.NumberDiscipline"
+   " INNER JOIN Theme ON Results.NumberTheme = Theme.NumberTheme AND "
+   "Results.NumberDiscipline = Theme.NumberDiscipline AND"
+   " Discipline.NumberDiscipline = Theme.NumberDiscipline");
+   DataModule1->ADOQuery1->Open();
+   DataModule1->ADOQuery2->Close();
+   DataModule1->ADOQuery2->SQL->Clear();
+   DataModule1->ADOQuery2->SQL->Add("Select NumberStudent as [Номер студента], "
+   "fam as [Фамилии], name as [Имя], otch as [Отчество],"
+   "GroupSt as [Группы], NumberStudentTicket[Номер студентеческого]"
+   "From Student");
+   DataModule1->ADOQuery2->Open();
+   Form6->DBGrid2->Options<<dgMultiSelect;
+   DataModule1->ADOQuery3->Close();
+   DataModule1->ADOQuery3->SQL->Clear();
+   DataModule1->ADOQuery3->SQL->Add("Select Formulation From Question Where "
+   "NameDiscipline=" +QuotedStr(Form6->sComboBox8->Text)+ " and "+
+   "ThemeName="+ QuotedStr(Form6->sComboBox9->Text)+ ";");
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm6::sCheckBox1Click(TObject *Sender)
+{
+   if (Form6->sCheckBox1->Checked==true)
+   {
+	 Form6->DateTimePicker1->Enabled=true;
+	 ReopenQuery();
+	 DataModule1->ADOQuery1->Filtered=true;
+   }
+   else
+   {
+	 Form6->DateTimePicker1->Date=Date();
+	 Form6->DateTimePicker1->Enabled=false;
+	 ReopenQuery();
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sCheckBox2Click(TObject *Sender)
+{
+   if (Form6->sCheckBox2->Checked==true)
+   {
+	 Form6->sComboBox1->Enabled=true;
+   }
+   else
+   {
+	 Form6->sComboBox1->Text="Фамилии!";
+	 Form6->sComboBox1->Enabled=false;
+	 ReopenQuery();
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sCheckBox3Click(TObject *Sender)
+{
+  if (Form6->sCheckBox3->Checked==true)
+   {
+	 Form6->sComboBox2->Enabled=true;
+   }
+   else
+   {
+	 Form6->sComboBox2->Text="Группы!";
+	 Form6->sComboBox2->Enabled=false;
+	 ReopenQuery();
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sCheckBox4Click(TObject *Sender)
+{
+   if (Form6->sCheckBox4->Checked==true)
+   {
+	 Form6->sComboBox3->Enabled=true;
+   }
+   else
+   {
+	 Form6->sComboBox3->Text="Дисциплины!";
+	 Form6->sComboBox3->Enabled=false;
+	 ReopenQuery();
+   }
+}
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sComboBox1Change(TObject *Sender)
+{
+	ReopenQuery();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sComboBox2Change(TObject *Sender)
+{
+	ReopenQuery();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sComboBox3Change(TObject *Sender)
+{
+	ReopenQuery();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::DateTimePicker1Change(TObject *Sender)
+{
+	ReopenQuery();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sButton3Click(TObject *Sender)
+{
+  DataModule1->ADOQuery3->Close();
+  DataModule1->ADOQuery3->SQL->Clear();
+  DataModule1->ADOQuery3->SQL->Text=("Insert Into Discipline (NumberDiscipline,"
+  " NameDiscipline) Values ((Select MAX(NumberDiscipline) From Discipline)+1, "
+   + QuotedStr(Form6->sEdit1->Text) + ");");
+  DataModule1->ADOQuery3->ExecSQL();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sButton5Click(TObject *Sender)
+{
+  DataModule1->ADOQuery3->Close();
+  DataModule1->ADOQuery3->SQL->Clear();
+  DataModule1->ADOQuery3->SQL->Text=("Insert Into Theme (NumberDiscipline,"
+  " NumberTheme, ThemeName) Values ((Select NumberDiscipline From Discipline"
+  " where NameDiscipline="+ QuotedStr(Form6->sComboBox7->Text)+
+  "), (Select MAX(NumberTheme) From Theme)+1, "+
+  QuotedStr(Form6->sEdit2->Text)+");");
+  DataModule1->ADOQuery3->ExecSQL();
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm6::sComboBox8Change(TObject *Sender)
+{
+   Form6->sComboBox9->Enabled=true;
+   DataModule1->ADOQuery3->Close();
+   DataModule1->ADOQuery3->SQL->Clear();
+   DataModule1->ADOQuery3->SQL->Add("Select ThemeName From Theme"
+   " INNER JOIN Discipline ON Theme.NumberDiscipline = "
+   "Discipline.NumberDiscipline Where NameDiscipline="+
+   QuotedStr(Form6->sComboBox8->Text)+ ";");
+   DataModule1->ADOQuery3->Open();
+   for (int i=0; i < DataModule1->ADOQuery3->RecordCount; i++)
+   {
+	  Form6->sComboBox9->Items->Add(DataModule1->ADOQuery3->FieldByName("ThemeName")->AsString);
+	  DataModule1->ADOQuery3->Next();
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sComboBox4Change(TObject *Sender)
+{
+   Form6->sComboBox5->Enabled=true;
+   DataModule1->ADOQuery3->Close();
+   DataModule1->ADOQuery3->SQL->Clear();
+   DataModule1->ADOQuery3->SQL->Add("Select ThemeName From Theme"
+   " INNER JOIN Discipline ON Theme.NumberDiscipline = "
+   "Discipline.NumberDiscipline Where NameDiscipline="+
+   QuotedStr(Form6->sComboBox4->Text)+ ";");
+   DataModule1->ADOQuery3->Open();
+   for (int i=0; i < DataModule1->ADOQuery3->RecordCount; i++)
+   {
+	  Form6->sComboBox5->Items->Add(DataModule1->ADOQuery3->FieldByName("ThemeName")->AsString);
+	  DataModule1->ADOQuery3->Next();
+   }
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sComboBox9Change(TObject *Sender)
+{
+  Form6->sComboBox6->Enabled=true;
+   DataModule1->ADOQuery3->Close();
+   DataModule1->ADOQuery3->SQL->Clear();
+   DataModule1->ADOQuery3->SQL->Add("SELECT  Formulation"
+" FROM         Question INNER JOIN "
+"Theme ON Question.NumberTheme = Theme.NumberTheme AND "
+"Question.NumberDiscipline = Theme.NumberDiscipline INNER JOIN "
+"Discipline ON Theme.NumberDiscipline = Discipline.NumberDiscipline "
+"Where NameDiscipline="+ QuotedStr(Form6->sComboBox8->Text)+
+" and ThemeName="+ QuotedStr(Form6->sComboBox9->Text)+";");
+   DataModule1->ADOQuery3->Open();
+   for (int i=0; i < DataModule1->ADOQuery3->RecordCount; i++)
+   {
+	  Form6->sComboBox5->Items->Add(DataModule1->ADOQuery3->FieldByName("Formulation")->AsString);
+	  DataModule1->ADOQuery3->Next();
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sButton10Click(TObject *Sender)
+{
+   DataModule1->ADOQuery3->Close();
+   DataModule1->ADOQuery3->SQL->Clear();
+   DataModule1->ADOQuery3->SQL->Add("Insert Into Question (Formulation,"
+   " NumberDiscipline, NumberQuestion, NumberTheme)"
+   "Values ("+ QuotedStr(Form6->sEdit4->Text)+ ", ("
+   "Select NumberDiscipline From Discipline Where NameDiscipline="+
+   QuotedStr(Form6->sComboBox4->Text)+"), (Select Max(NumberQuestion) From "
+   "Question), (Select NumberTheme From Theme Where ThemeName="
+   + QuotedStr(Form6->sComboBox5->Text)+"));");
+   DataModule1->ADOQuery3->ExecSQL();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sButton1Click(TObject *Sender)
+{
+  if (MessageDlg("Вы уверены, что хотите удалить запись ?", mtConfirmation,TMsgDlgButtons() << mbYes << mbNo, 0) == mrYes)
+  {
+	 DataModule1->ADOQuery2->Delete();
+  }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm6::sButton2Click(TObject *Sender)
+{
+  DataModule1->ADOQuery2->Close();
+  DataModule1->ADOQuery2->SQL->Clear();
+  DataModule1->ADOQuery2->SQL->Text="Delete From Student";
+  DataModule1->ADOQuery2->ExecSQL();
+}
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+
+

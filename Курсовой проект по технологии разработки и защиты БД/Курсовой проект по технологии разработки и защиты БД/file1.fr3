@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="5.0.4" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="41778,0072073958" ReportOptions.Description.Text="" ReportOptions.LastChange="41778,5485710069" ScriptLanguage="PascalScript" ScriptText.Text="&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
+  <Datasets>
+    <item DataSet="frxDBDataset1" DataSetName="frxDBDataset1"/>
+  </Datasets>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000">
+    <TfrxADOQuery Name="ADOQuery1" UserName="ADOQuery1" CloseDataSource="True" FieldAliases.Text="" BCDToCurrency="False" IgnoreDupParams="False" SQL.Text="SELECT  fam, NumberStudentTicket, Formulation, UnResults.NumberAnswer, TrueNumberAnswer, ThemeName, NameDiscipline  &#13;&#10;FROM         Student INNER JOIN&#13;&#10;                      UnResults ON Student.NumberStudent = UnResults.NumberStudent INNER JOIN&#13;&#10;                      Answers ON UnResults.NumberAnswer = Answers.NumberAnswer INNER JOIN&#13;&#10;                      Question ON UnResults.NumberQuestion = Question.NumberQuestion AND UnResults.NumberTheme = Question.NumberTheme AND UnResults.NumberDiscipline = Question.NumberDiscipline AND &#13;&#10;                      Answers.NumberQuestion = Question.NumberQuestion AND Answers.NumberTheme = Question.NumberTheme AND Answers.NumberDiscipline = Question.NumberDiscipline INNER JOIN&#13;&#10;                      Discipline ON UnResults.NumberDiscipline = Discipline.NumberDiscipline INNER JOIN&#13;&#10;                      Theme ON Question.NumberTheme = Theme.NumberTheme AND Question.NumberDiscipline = Theme.NumberDiscipline AND Discipline.NumberDiscipline = Theme.NumberDiscipline  &#13;&#10;                " CommandTimeout="30" LockType="ltReadOnly" PropData="05704C65667402600470546F700390000A506172616D65746572730100"/>
+  </TfrxDataPage>
+  <TfrxReportPage Name="Page1" Orientation="poLandscape" PaperWidth="297" PaperHeight="210" PaperSize="9" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="">
+    <TfrxReportTitle Name="ReportTitle1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="22,67718" Left="0" Top="18,89765" Width="1046,92981">
+      <TfrxMemoView Name="Memo2" Left="3,77953" Top="3,77953" Width="351,49629" Height="18,89765" Text="Отчет для решения спорных вопросов с студентом:"/>
+    </TfrxReportTitle>
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="83,14966" Left="0" Top="83,14966" Width="1046,92981" ColumnWidth="0" ColumnGap="0" RowCount="0">
+      <TfrxMemoView Name="frxDBDataset1fam" Left="7,55906" Top="3,77953" Width="158,74026" Height="18,89765" DataField="fam" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Text="[frxDBDataset1.&#34;fam&#34;]"/>
+      <TfrxMemoView Name="frxDBDataset1NumberStudentTicket" Left="181,41744" Top="3,77953" Width="158,74026" Height="18,89765" DataField="NumberStudentTicket" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Text="[frxDBDataset1.&#34;NumberStudentTicket&#34;]"/>
+      <TfrxMemoView Name="frxDBDataset1Formulation" Left="355,27582" Top="3,77953" Width="400,63018" Height="18,89765" DataField="Formulation" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Text="[frxDBDataset1.&#34;Formulation&#34;]"/>
+      <TfrxMemoView Name="frxDBDataset1NumberAnswer" Left="771,02412" Top="3,77953" Width="79,37013" Height="18,89765" DataField="NumberAnswer" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Text="[frxDBDataset1.&#34;NumberAnswer&#34;]"/>
+      <TfrxMemoView Name="frxDBDataset1TrueNumberAnswer" Left="861,73284" Top="3,77953" Width="79,37013" Height="18,89765" DataField="TrueNumberAnswer" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Text="[frxDBDataset1.&#34;TrueNumberAnswer&#34;]"/>
+      <TfrxMemoView Name="frxDBDataset1ThemeName" Left="3,77953" Top="45,35436" Width="400,63018" Height="18,89765" DataField="ThemeName" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Text="[frxDBDataset1.&#34;ThemeName&#34;]"/>
+      <TfrxMemoView Name="frxDBDataset1NameDiscipline" Left="642,5201" Top="45,35436" Width="400,63018" Height="18,89765" DataField="NameDiscipline" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Text="[frxDBDataset1.&#34;NameDiscipline&#34;]"/>
+    </TfrxMasterData>
+    <TfrxPageFooter Name="PageFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="22,67718" Left="0" Top="200,31509" Width="1046,92981">
+      <TfrxMemoView Name="Memo1" Left="642,5201" Top="0" Width="75,5906" Height="18,89765" HAlign="haRight" Text="[Page#]"/>
+    </TfrxPageFooter>
+  </TfrxReportPage>
+</TfrxReport>

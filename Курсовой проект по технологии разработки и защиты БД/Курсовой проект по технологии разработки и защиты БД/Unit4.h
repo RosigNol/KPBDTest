@@ -1,0 +1,38 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit4H
+#define Unit4H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Windows.h>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include "sButton.hpp"
+#include "sGroupBox.hpp"
+#include "sLabel.hpp"
+#include "sPanel.hpp"
+#include <Vcl.ExtCtrls.hpp>
+//---------------------------------------------------------------------------
+class TForm4 : public TForm
+{
+__published:	// IDE-managed Components
+	TsPanel *sPanel1;
+	TsLabel *sLabel1;
+	TsLabel *sLabel2;
+	TsRadioGroup *sRadioGroup1;
+	TsLabel *sLabel5;
+	TsButton *sButton1;
+	TsLabel *sLabel3;
+	TImage *Image1;
+	void __fastcall sButton1Click(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+private:	// User declarations
+public:		// User declarations
+	__fastcall TForm4(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm4 *Form4;
+//---------------------------------------------------------------------------
+#endif

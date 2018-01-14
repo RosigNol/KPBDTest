@@ -1,0 +1,28 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit16H
+#define Unit16H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Data.DB.hpp>
+#include <Data.Win.ADODB.hpp>
+//---------------------------------------------------------------------------
+class TDataModule1 : public TDataModule
+{
+__published:	// IDE-managed Components
+	TADOConnection *ADOConnection1;
+	TADOQuery *ADOQuery1;
+	TDataSource *DataSource1;
+	TADOStoredProc *ADOStoredProc1;
+	TADOStoredProc *ADOStoredProc2;
+	TADOStoredProc *ADOStoredProc3;
+	TADOStoredProc *ADOStoredProc4;
+	TADOQuery *ADOQuery2;
+private:	// User declarations
+public:		// User declarations
+	__fastcall TDataModule1(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TDataModule1 *DataModule1;
+//---------------------------------------------------------------------------
+#endif

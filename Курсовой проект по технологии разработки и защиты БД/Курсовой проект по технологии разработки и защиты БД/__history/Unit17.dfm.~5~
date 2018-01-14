@@ -1,0 +1,200 @@
+object Form2: TForm2
+  Left = 0
+  Top = 0
+  Caption = #1051#1080#1095#1085#1086#1077' '#1076#1077#1083#1086' '#1089#1090#1091#1076#1077#1085#1090#1072
+  ClientHeight = 532
+  ClientWidth = 757
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  Menu = MainMenu1
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  OnClose = FormClose
+  PixelsPerInch = 96
+  TextHeight = 13
+  object sPanel1: TsPanel
+    Left = 8
+    Top = 24
+    Width = 741
+    Height = 177
+    TabOrder = 0
+    SkinData.SkinSection = 'PANEL'
+    object sLabel1: TsLabel
+      Left = 184
+      Top = 48
+      Width = 36
+      Height = 13
+      Caption = 'sLabel1'
+    end
+    object sLabel2: TsLabel
+      Left = 256
+      Top = 48
+      Width = 36
+      Height = 13
+      Caption = 'sLabel2'
+    end
+    object sLabel3: TsLabel
+      Left = 320
+      Top = 48
+      Width = 36
+      Height = 13
+      Caption = 'sLabel3'
+    end
+    object sLabel4: TsLabel
+      Left = 24
+      Top = 16
+      Width = 36
+      Height = 13
+      Caption = 'sLabel4'
+    end
+    object sLabel5: TsLabel
+      Left = 184
+      Top = 112
+      Width = 36
+      Height = 13
+      Caption = 'sLabel5'
+    end
+    object sLabel6: TsLabel
+      Left = 400
+      Top = 112
+      Width = 36
+      Height = 13
+      Caption = 'sLabel6'
+    end
+    object sLabel7: TsLabel
+      Left = 24
+      Top = 48
+      Width = 36
+      Height = 13
+      Caption = 'sLabel7'
+    end
+    object sLabel8: TsLabel
+      Left = 24
+      Top = 112
+      Width = 36
+      Height = 13
+      Caption = 'sLabel8'
+    end
+    object sLabel9: TsLabel
+      Left = 304
+      Top = 112
+      Width = 36
+      Height = 13
+      Caption = 'sLabel9'
+    end
+  end
+  object sButton1: TsButton
+    Left = 8
+    Top = 488
+    Width = 75
+    Height = 25
+    Caption = #1042#1099#1093#1086#1076
+    TabOrder = 1
+    OnClick = sButton1Click
+    SkinData.SkinSection = 'BUTTON'
+  end
+  object sPanel2: TsPanel
+    Left = 8
+    Top = 232
+    Width = 741
+    Height = 201
+    TabOrder = 2
+    SkinData.SkinSection = 'PANEL'
+    object sLabel10: TsLabel
+      Left = 18
+      Top = 24
+      Width = 42
+      Height = 13
+      Caption = 'sLabel10'
+    end
+    object sLabel11: TsLabel
+      Left = 18
+      Top = 64
+      Width = 42
+      Height = 13
+      Caption = 'sLabel11'
+    end
+    object sLabel12: TsLabel
+      Left = 18
+      Top = 120
+      Width = 42
+      Height = 13
+      Caption = 'sLabel12'
+    end
+    object sComboBox1: TsComboBox
+      Left = 147
+      Top = 64
+      Width = 209
+      Height = 21
+      Alignment = taLeftJustify
+      BoundLabel.Indent = 0
+      BoundLabel.Font.Charset = DEFAULT_CHARSET
+      BoundLabel.Font.Color = clWindowText
+      BoundLabel.Font.Height = -11
+      BoundLabel.Font.Name = 'Tahoma'
+      BoundLabel.Font.Style = []
+      BoundLabel.Layout = sclLeft
+      BoundLabel.MaxWidth = 0
+      BoundLabel.UseSkinColor = True
+      SkinData.SkinSection = 'COMBOBOX'
+      VerticalAlignment = taAlignTop
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ItemIndex = -1
+      ParentFont = False
+      TabOrder = 0
+      Text = #1044#1080#1089#1094#1080#1087#1083#1080#1085#1099'!'
+      OnChange = sComboBox1Change
+    end
+    object sComboBox2: TsComboBox
+      Left = 147
+      Top = 112
+      Width = 209
+      Height = 21
+      Alignment = taLeftJustify
+      BoundLabel.Indent = 0
+      BoundLabel.Font.Charset = DEFAULT_CHARSET
+      BoundLabel.Font.Color = clWindowText
+      BoundLabel.Font.Height = -11
+      BoundLabel.Font.Name = 'Tahoma'
+      BoundLabel.Font.Style = []
+      BoundLabel.Layout = sclLeft
+      BoundLabel.MaxWidth = 0
+      BoundLabel.UseSkinColor = True
+      SkinData.SkinSection = 'COMBOBOX'
+      VerticalAlignment = taAlignTop
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ItemIndex = -1
+      ParentFont = False
+      TabOrder = 1
+      Text = #1058#1077#1084#1099'!'
+    end
+    object sButton2: TsButton
+      Left = 18
+      Top = 168
+      Width = 135
+      Height = 25
+      Caption = 'sButton2'
+      TabOrder = 2
+      OnClick = sButton2Click
+      SkinData.SkinSection = 'BUTTON'
+    end
+  end
+  object MainMenu1: TMainMenu
+    Left = 712
+    Top = 464
+  end
+end

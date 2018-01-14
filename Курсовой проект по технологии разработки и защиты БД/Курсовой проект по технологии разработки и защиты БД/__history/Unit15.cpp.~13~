@@ -1,0 +1,292 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit15.h"
+#include "Unit16.h"
+#include "Unit17.h"
+#include "Unit18.h"
+#include "Unit6.h"
+#include "Unit7.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma link "sSkinManager"
+#pragma link "sButton"
+#pragma link "sEdit"
+#pragma link "sLabel"
+#pragma link "sPageControl"
+#pragma link "sPanel"
+#pragma link "frxDCtrl"
+#pragma link "frxADOComponents"
+#pragma resource "*.dfm"
+#pragma resource "КП_resources.RES"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+   Form1->GridPanel1->Align=alClient;
+   /////////////////////////////
+   Form1->sLabel1->Caption="Ввод номера студенческого билета и фамилии студента:";
+   Form1->sEdit1->Text="Введите номер Вашего студенческого билета!";
+   Form1->sEdit2->Text="Введите Вашу фамилию!";
+   Form1->sButton1->Caption=("Войти в учетную запись.");
+   Form1->sButton2->Caption=("Регистрация нового студента.");
+   Form1->sLabel2->Caption=("или");
+   /////////////////////////////
+   Form1->sLabel3->Caption=("Ввод логина и пароля учительской учетной записи:");
+   Form1->sEdit3->Text=("Введите Ваш логин!");
+   Form1->sEdit4->Text=("Введите Вам пароль!");
+   Form1->sButton3->Caption=("Войти в учетную запись.");
+   Form1->sButton4->Caption=("Регистрация нового учителя.");
+   Form1->sLabel4->Caption=("или");
+   /////////////////////////////
+   Graphics::TBitmap *ptBitmap;
+   ptBitmap=new Graphics::TBitmap();
+   TResourceStream* ptRes =
+   new TResourceStream((int)HInstance, "Bitmap_5",L"RT_BITMAP");
+   ptBitmap->LoadFromStream(ptRes);
+   Image1->Picture->Assign((TPersistent*)ptBitmap);
+   Image2->Picture->Assign((TPersistent*)ptBitmap);
+   ////////////////////////////////////////////////////////////////
+   Graphics::TBitmap *ptBitmap1;
+   ptBitmap1=new Graphics::TBitmap();
+   TResourceStream* ptRes1 =
+   new TResourceStream((int)HInstance, "Bitmap_5",L"RT_BITMAP");
+   ptBitmap1->LoadFromStream(ptRes1);
+}
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::sEdit1Click(TObject *Sender)
+{
+   Form1->sEdit1->Text="";
+   if (Form1->sEdit2->Text=="") {
+   Form1->sEdit2->Text="Введите Вашу фамилию!";
+   }
+	if (Form1->sEdit3->Text=="") {
+   Form1->sEdit3->Text="Введите Ваш логин!";
+   }
+   if (Form1->sEdit4->Text=="") {
+   Form1->sEdit4->Text="Введите Ваш пароль!";
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::sEdit2Click(TObject *Sender)
+{
+   Form1->sEdit2->Text="";
+   if (Form1->sEdit1->Text=="") {
+   Form1->sEdit1->Text="Введите номер Вашего студенческого билета!";
+   }
+   if (Form1->sEdit3->Text=="") {
+   Form1->sEdit3->Text="Введите Ваш логин!";
+   }
+   if (Form1->sEdit4->Text=="") {
+   Form1->sEdit4->Text="Введите Ваш пароль!";
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::sEdit3Click(TObject *Sender)
+{
+   Form1->sEdit3->Text="";
+   if (Form1->sEdit4->Text=="") {
+   Form1->sEdit4->Text="Введите Ваш пароль!";
+   }
+   if (Form1->sEdit1->Text=="") {
+   Form1->sEdit1->Text="Введите номер Вашего студенческого билета!";
+   }
+   if (Form1->sEdit2->Text=="") {
+   Form1->sEdit2->Text="Введите Вашу фамилию!";
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::sEdit4Click(TObject *Sender)
+{
+  Form1->sEdit4->Text="";
+  if (Form1->sEdit3->Text=="") {
+   Form1->sEdit3->Text="Введите Ваш логин!";
+   }
+   if (Form1->sEdit2->Text=="") {
+   Form1->sEdit2->Text="Введите Вашу фамилию!";
+   }
+   if (Form1->sEdit1->Text=="") {
+   Form1->sEdit1->Text="Введите номер Вашего студенческого билета!";
+   }
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::sButton1Click(TObject *Sender)
+{
+   if (DataModule1->ADOConnection1->Connected!=false)
+   {
+   //DataModule1->ADOStoredProc1->ProcedureName="TransProvStudent;1";
+   DataModule1->ADOStoredProc1->Parameters->ParamByName("@fam")->Value=(Form1->sEdit2->Text);
+   DataModule1->ADOStoredProc1->Parameters->ParamByName("@NumberStudentTicket")->Value=(Form1->sEdit1->Text);
+   DataModule1->ADOStoredProc1->ExecProc();
+   if(Form1->sEdit1->Text.IsEmpty())
+   {
+		ShowMessage("Вы не заполнили поле 'Номер студенческого билета'!");
+   }
+   else
+   if(Form1->sEdit2->Text.IsEmpty())
+   {
+		ShowMessage("Вы не заполнили поле 'Фамилия'!");
+   }
+   else
+   {
+   if (DataModule1->ADOStoredProc1->Parameters->ParamValues["@char"]=="y")
+   {
+	   Form1->Hide();
+	   Form2->ShowModal();
+   }
+   else
+   {
+	   ShowMessage("Простите, но такого учащегося не существует!\n"
+	   "Проверьте правильность ввода данных и зайдите снова.\n"
+	   "Если Ваших данных ещё нет в системе- зарегистрируйтесь.");
+   }
+   }
+   }
+   else
+   {
+	  ShowMessage("Вы не подключены к базе данных!\n"
+	  "Для работы с программой выполните вход в базу данных \n"
+	  "через главное меню программы.");
+   }
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::sButton2Click(TObject *Sender)
+{
+	 if (DataModule1->ADOConnection1->Connected!=false)
+   {
+	Form1->Hide();
+	Form3 = new TForm3(this);
+	Form3->ShowModal();
+   }
+	else
+   {
+	  ShowMessage("Вы не подключены к базе данных!\n"
+	  "Для работы с программой выполните вход в базу данных \n"
+	  "через главное меню программы.");
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::sButton3Click(TObject *Sender)
+{
+   if (DataModule1->ADOConnection1->Connected!=false)
+   {
+   DataModule1->ADOStoredProc2->Parameters->ParamByName("@login")->Value=(Form1->sEdit3->Text);
+   DataModule1->ADOStoredProc2->Parameters->ParamByName("@password")->Value=(Form1->sEdit4->Text);
+   DataModule1->ADOStoredProc2->ExecProc();
+   if(Form1->sEdit3->Text.IsEmpty())
+   {
+		ShowMessage("Вы не заполнили поле 'Логин'!");
+   }
+   else
+   if(Form1->sEdit4->Text.IsEmpty())
+   {
+		ShowMessage("Вы не заполнили поле 'Пароль'!");
+   }
+   else
+   {
+   if (DataModule1->ADOStoredProc2->Parameters->ParamValues["@char"]=="y")
+   {
+	   Form1->Hide();
+	   Form6->ShowModal(); //Вставить код новой формы.
+   }
+   else
+   {
+	   ShowMessage("Простите, но такого преподавателя не существует!\n"
+	   "Проверьте правильность ввода данных и зайдите снова.\n"
+	   "Если Ваших данных ещё нет в системе- зарегистрируйтесь.");
+   }
+   }
+   }
+   else
+   {
+	  ShowMessage("Вы не подключены к базе данных!\n"
+	  "Для работы с программой выполните вход в базу данных \n"
+	  "через главное меню программы.");
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::sButton4Click(TObject *Sender)
+{
+	if (DataModule1->ADOConnection1->Connected!=false)
+   {
+  	Form1->Hide();
+	Form7 = new TForm7(this);
+	Form7->ShowModal();;
+   }
+   else
+   {
+	  ShowMessage("Вы не подключены к базе данных!\n"
+	  "Для работы с программой выполните вход в базу данных \n"
+	  "через главное меню программы.");
+   }
+}
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::N2Click(TObject *Sender)
+{
+	DataModule1->ADOConnection1->Connected=false;
+	AnsiString DS = "";
+	DS = PromptDataSource(reinterpret_cast<unsigned int>(Handle), DataModule1->ADOConnection1->ConnectionString);
+	if (DS.Length() == 0)
+	{
+	   AnsiString msg = "Вы отказались подключиться к базе дынных.";
+	   MessageDlg(msg, mtInformation, TMsgDlgButtons() << mbNo << mbYes, 0);
+	}
+	else
+	 {
+	   AnsiString msg = "Подключение прошло успешно!";
+	   ShowMessage(msg);
+	try {
+	DataModule1->ADOConnection1->ConnectionString= DS;
+	}
+	catch (...) {
+	}
+  }
+	DataModule1->ADOConnection1->Connected=true;
+}
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::N3Click(TObject *Sender)
+{
+	DataModule1->ADOConnection1->Connected=false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::N4Click(TObject *Sender)
+{
+	Application->Terminate();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
+{
+   Application->Terminate();
+}
+//---------------------------------------------------------------------------
+

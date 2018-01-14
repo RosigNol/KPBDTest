@@ -1,0 +1,143 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit5.h"
+#include "Unit4.h"
+#include "Unit16.h"
+#include "Unit15.h"
+#include "Unit17.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma link "sButton"
+#pragma link "sLabel"
+#pragma link "sPanel"
+#pragma link "sButton"
+#pragma link "sLabel"
+#pragma link "sPanel"
+#pragma link "sButton"
+#pragma link "sLabel"
+#pragma link "sPanel"
+#pragma link "frxClass"
+#pragma link "frxADOComponents"
+#pragma resource "*.dfm"
+
+
+TForm5 *Form5;
+extern String timestart;
+extern int ball;
+extern int rand2;
+String sim2;
+String timefinish;
+TDateTime myTime;
+//---------------------------------------------------------------------------
+__fastcall TForm5::TForm5(TComponent* Owner)
+	: TForm(Owner)
+{
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm5::FormActivate(TObject *Sender)
+{
+   Form5->sButton2->Caption="Перейти обратно в личное дело.";
+   timefinish=FormatDateTime("hh:mm:ss", myTime.CurrentDateTime());
+   Form5->sLabel10->Caption="Резюме и результаты Вашего тестирования:";
+   DataModule1->ADOQuery1->Close();
+   DataModule1->ADOQuery1->SQL->Clear();
+   DataModule1->ADOQuery1->SQL->Add("Select  fam, name, otch, GroupSt "
+   "From Student Where NumberStudentTicket="+
+   QuotedStr(Form1->sEdit1->Text)+ ";");
+   DataModule1->ADOQuery1->Open();
+   Form5->sLabel1->Caption="ФИО: "+DataModule1->ADOQuery1->FieldByName("fam")->AsString+
+   " "+DataModule1->ADOQuery1->FieldByName("name")->AsString+" "+
+   DataModule1->ADOQuery1->FieldByName("otch")->AsString;
+   Form5->sLabel2->Caption="Группа: "+DataModule1->ADOQuery1->FieldByName("GroupSt")->AsString+".";
+   Form5->sLabel3->Caption="Дисциплина: "+Form2->sComboBox1->Text;
+   Form5->sLabel4->Caption="Тема: "+Form2->sComboBox2->Text;
+   Form5->sLabel5->Caption="Время начала: "+timestart+" Время окончания: "+timefinish;
+   Form5->sLabel6->Caption="Дата: "+Now().DateString();
+   Form5->sLabel7->Caption="Ваши баллы за тест: "+ IntToStr(ball);
+   DataModule1->ADOQuery2->Close();
+   DataModule1->ADOQuery2->SQL->Clear();
+   DataModule1->ADOQuery2->SQL->Add("exec Выборка_оценки @ball="+ QuotedStr(IntToStr(ball))+ ";");
+   DataModule1->ADOQuery2->Open();
+   Form5->sLabel8->Caption="Оценка: "+DataModule1->ADOQuery2->FieldByName("mark")->AsString;
+   Form5->sLabel11->Caption="Отчет Ваших результатов";
+   Form5->sButton1->Caption="Отчет.";
+   switch (StrToInt(DataModule1->ADOQuery2->FieldByName("mark")->AsString))
+   {
+	   case (1):
+	   {
+		 Form5->sLabel9->Caption="Ужасно! Вы плохо знаете тему. \n"
+		 "Выучите материал и пересдайте тест. Удачи!";
+		 break;
+	   };
+	   case (2):
+	   {
+		 Form5->sLabel9->Caption="Плохо. Вам нужно больше времени \n"
+		 "уделять изучению материала! Удачи!";
+		 break;
+	   };
+	   case (3):
+	   {
+		 Form5->sLabel9->Caption="Удовлетворительно, но можно и лучше! \n"
+		 "Доучите тему и пересдайте. Удачи!";
+		 break;
+	   };
+	   case (4):
+	   {
+		 Form5->sLabel9->Caption="Вы хорошо знаете материал. \n"
+		 "Но все же не идеально... Удачи!";
+		 break;
+	   };
+	   case (5):
+	   {
+		 Form5->sLabel9->Caption="Превосходно! Но нет предела совершенству. \n";
+		 break;
+	   };
+   }
+   sim2="Y";
+   DataModule1->ADOQuery2->Close();
+   DataModule1->ADOQuery2->SQL->Clear();
+   DataModule1->ADOQuery2->SQL->Text=("exec Добавление_результатов"
+   " @NumberTheme="+ QuotedStr(Form2->sComboBox2->Text)+", @NumberDiscipline="+
+	QuotedStr(Form2->sComboBox1->Text)+", @StudentFam=" +
+	QuotedStr(DataModule1->ADOQuery1->FieldByName("fam")->AsString)+
+	", @StudentTicket="+ QuotedStr(Form1->sEdit1->Text)+
+	", @startSt="+ QuotedStr(timestart) +", @FinishSt="+QuotedStr(timefinish)+
+	", @SumPoint="+ QuotedStr(IntToStr(ball))+
+	", @pr="+QuotedStr(sim2)+";");
+	DataModule1->ADOQuery2->ExecSQL();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm5::sButton2Click(TObject *Sender)
+{
+  Form2->Close();
+  Form5->Close();
+  Form5->Hide();
+  Form2 = new TForm2(this);
+  Form2->ShowModal();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm5::sButton1Click(TObject *Sender)
+{
+   Form5->frxReport1->Variables->Variables["parametr1"]=rand2;
+   Form5->frxReport1->ShowReport();
+}
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+
+void __fastcall TForm5::FormClose(TObject *Sender, TCloseAction &Action)
+{
+  	if (MessageDlg("Вы уверены, что хотите выйти из программы?", mtConfirmation,TMsgDlgButtons() << mbYes << mbNo, 0) == mrYes)
+  {
+	 Application->Terminate();
+  }
+}
+//---------------------------------------------------------------------------
+

@@ -1,0 +1,47 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit17H
+#define Unit17H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include "sLabel.hpp"
+#include "sPanel.hpp"
+#include <Vcl.ExtCtrls.hpp>
+#include <Vcl.Menus.hpp>
+#include "sButton.hpp"
+#include <Vcl.DBGrids.hpp>
+#include <Vcl.Grids.hpp>
+#include "sComboBox.hpp"
+//---------------------------------------------------------------------------
+class TForm2 : public TForm
+{
+__published:	// IDE-managed Components
+	TsButton *sButton1;
+	TsPanel *sPanel2;
+	TsLabel *sLabel10;
+	TsComboBox *sComboBox1;
+	TsComboBox *sComboBox2;
+	TsLabel *sLabel11;
+	TsLabel *sLabel12;
+	TsButton *sButton2;
+	TsPanel *sPanel1;
+	TsLabel *sLabel4;
+	TsLabel *sLabel7;
+	TsLabel *sLabel8;
+	TsLabel *sLabel9;
+	void __fastcall sButton1Click(TObject *Sender);
+	void __fastcall FormActivate(TObject *Sender);
+	void __fastcall sComboBox1Change(TObject *Sender);
+	void __fastcall sButton2Click(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+private:	// User declarations
+public:		// User declarations
+	__fastcall TForm2(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm2 *Form2;
+//---------------------------------------------------------------------------
+#endif
